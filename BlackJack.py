@@ -1,32 +1,20 @@
 # Black Jack
 # by Rafael Oquendo
 10/1/2014
-
+import sys
 import random
 """I learned to program in C#, i love arrays hence why i am using lists here. I am sure 
 there is a better way to program this but give me a break, this is my 
 first week in python : ) """
-#generateCardValue generates a random number from 0-12
-def generateCardValue():
-	return random.randint(0,12)
-#generateCardsuite generates a random number from 0-3	
-def generateCardSuite():
-	return random.randint(0,3)
-#realValue sends user the actual value of the card in play
-def realValue(outputVal):
-	value = outputVal + 2
-	if value > 13:
-		value = 11
-	elif value <= 13 and value > 10:
-		value = 10
-	return value
-#totalValue takes a input to integer number and adds them up and sends it back to the user
-def totalValue(x,y):
-	return x + y
-#autoWin checks to see if the user has 21 
 def autoWin(userValue, dealerValue):
 	if userValue == 21 and dealerValue == 21:
-		print "User Value is %d and Dealer is %d. Congrats User You Win" %userValue, dealerValue
+		print "User Value is %d and Dealer is %d Congrats User You Win" %(userValue, dealerValue)
+		sys.exit()
+	elif userValue == 21:
+		print "User Value is %d and Dealer is %d. Congrats User You Win" %(userValue, dealerValue)
+		sys.exit()
+
+
 #changeTheAce is used inthe event that the users gets 2 a's in the beginning of the game
 #its sets the value to 2 instead of 22
 def changeTheAce(unknownVariable):
@@ -34,6 +22,39 @@ def changeTheAce(unknownVariable):
 		return 2
 	else:
 		return unknownVariable
+
+
+
+#generateCardValue generates a random number from 0-12
+def generateCardValue():
+	return random.randint(0,12)
+
+
+#generateCardsuite generates a random number from 0-3	
+def generateCardSuite():
+	return random.randint(0,3)
+#realValue sends user the actual value of the card in play
+
+
+def realValue(outputVal):
+	value = outputVal + 2
+	if value > 13:
+		value = 11
+	elif value > 10:
+		value = 10
+	return value
+#totalValue takes a input to integer number and adds them up and sends it back to the user
+
+
+def totalValue(x,y):
+	return x + y
+#autoWin checks to see if the user has 21 
+
+
+
+
+
+
 
 #checkAce is used after the first value, in the event a user gets an Ace which higher than 21
 #it will convert that ace to a 1
@@ -66,8 +87,7 @@ def isOver(user,dealer):
 		print "User Score: ", user 
 		print "Dealers Score: ",dealer
 		print "You Lose"
-		exit(0)
-
+		sys.exit()
 """
 ##########################################################################################
 									Functions above
@@ -114,7 +134,7 @@ print "Dealers Hand", dealerHand
 print userTotalValue, dealerTotalValue
 
 checkWin(userTotalValue,dealerTotalValue)
-
+"""
 play = True
 
 while play:
@@ -136,7 +156,7 @@ while play:
 	else :
 		play = False
 		print "Your total is ",userTotalValue
-
+"""
 
 whoWon(userTotalValue, dealerTotalValue)
 

@@ -24,6 +24,15 @@ def changeTheAce(unknownVariable):
 		return unknownVariable
 
 
+#checkAce is used after the first value, in the event a user gets an Ace which higher than 21
+#it will convert that ace to a 1
+def checkAce(card, totalValue):
+	newValue = card + totalValue
+	if newValue > 21:
+		return 1
+	else:
+		return card
+
 
 #generateCardValue generates a random number from 0-12
 def generateCardValue():
@@ -56,14 +65,7 @@ def totalValue(x,y):
 
 
 
-#checkAce is used after the first value, in the event a user gets an Ace which higher than 21
-#it will convert that ace to a 1
-def checkAce(card, totalValue):
-	newValue = card + totalValue
-	if newValue > 21:
-		return 1
-	else:
-		return card
+
 
 def whoWon(user, dealer):
 	print "#################################################################################"
@@ -134,7 +136,7 @@ print "Dealers Hand", dealerHand
 print userTotalValue, dealerTotalValue
 
 checkWin(userTotalValue,dealerTotalValue)
-"""
+
 play = True
 
 while play:
@@ -156,7 +158,6 @@ while play:
 	else :
 		play = False
 		print "Your total is ",userTotalValue
-"""
 
 whoWon(userTotalValue, dealerTotalValue)
 

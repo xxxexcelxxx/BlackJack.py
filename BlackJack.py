@@ -3,26 +3,17 @@
 10/1/2014
 import sys
 import random
+
 """I learned to program in C#, i love arrays hence why i am using lists here. I am sure 
 there is a better way to program this but give me a break, this is my 
 first week in python : ) """
+#autoWin checks to see if the user has 21 
 def autoWin(userValue, dealerValue):
 	if userValue == 21 and dealerValue == 21:
 		print "User Value is %d and Dealer is %d Congrats User You Win" %(userValue, dealerValue)
-		sys.exit()
 	elif userValue == 21:
 		print "User Value is %d and Dealer is %d. Congrats User You Win" %(userValue, dealerValue)
-		sys.exit()
-
-
-#changeTheAce is used inthe event that the users gets 2 a's in the beginning of the game
-#its sets the value to 2 instead of 22
-def changeTheAce(unknownVariable):
-	if unknownVariable == 22:
-		return 2
-	else:
-		return unknownVariable
-
+		
 
 #checkAce is used after the first value, in the event a user gets an Ace which higher than 21
 #it will convert that ace to a 1
@@ -33,39 +24,61 @@ def checkAce(card, totalValue):
 	else:
 		return card
 
+#changeTheAce is used inthe event that the users gets 2 a's in the beginning of the game
+#its sets the value to 2 instead of 22
+def changeInitialAce(unknownVariable):
+	if unknownVariable == 22:
+		return 2
+	else:
+		return unknownVariable
 
-#generateCardValue generates a random number from 0-12
-def generateCardValue():
-	return random.randint(0,12)
+def CheckWinner(user):
+	if user == 21:
+		return True
 
 
-#generateCardsuite generates a random number from 0-3	
-def generateCardSuite():
-	return random.randint(0,3)
-#realValue sends user the actual value of the card in play
+def DisplayHand(usersHand, dealersHand):
+	print "Users Hand is:" ,usersHand
+	print "Dealers Hand is:", dealersHand
+
+		
+def Greeting():
+	print "|\t##################################################\t|"
+	print "|\t\tHello and Welcome to BlackJack\t\t\t|"
+	print "|\t\tHow To Play\t\t\t\t\t|"
+	print "|\t\tThis program will generate 2 cards for you\t|"
+	print "|\t\tYou can either choose to hit or stay\t\t|"
+	print "|\t\tGood Luck\t\t\t\t\t|"
+	print "|\t##################################################\t|\n"
 
 
-def realValue(outputVal):
-	value = outputVal + 2
-	if value > 13:
-		value = 11
-	elif value > 10:
-		value = 10
-	return value
+def isOver(user,dealer):
+	if user > 21:
+		print "User Score: ", user 
+		print "Dealers Score: ",dealer
+		print "You Lose"
+		return True
+
+def realValue(faceCard):
+	if faceCard == 'a':
+		return 11
+	if faceCard == 'j' or faceCard == 'q' or faceCard == 'k':
+		return 10
+
+	return faceCard
+
+
 #totalValue takes a input to integer number and adds them up and sends it back to the user
+def totalValue(card1,card2):
+	if card1 + card2 == 22: # checks if user has 2 aces if so return the value of 2
+		return 2
+
+	return card1 + card2
 
 
-def totalValue(x,y):
-	return x + y
-#autoWin checks to see if the user has 21 
-
-
-
-
-
-
-
-
+def winnersAnnouncement(user, dealer):
+	print "Congrats You are the Winner"
+	print "Users Hand %d Dealers Hand %d " %(user, dealer)
 
 def whoWon(user, dealer):
 	print "#################################################################################"
@@ -78,86 +91,92 @@ def whoWon(user, dealer):
 		print "Dealers Score: ",dealer
 		print "DEALER IS THE WINNER"
 
-def checkWin(user,dealer):
-	if user == 21:
-		print "User Score: ", user 
-		print "Dealers Score: ",dealer
-		print "CONGRATS YOU ARE THE WINNER"
-
-def isOver(user,dealer):
-	if user > 21:
-		print "User Score: ", user 
-		print "Dealers Score: ",dealer
-		print "You Lose"
-		sys.exit()
 """
 ##########################################################################################
 									Functions above
 ##########################################################################################
 
 """
-cardType = [2,3,4,5,6,7,8,9,10,"j","q","k","a"]   # used to generate output for user
+cardType = [2,3,4,5,6,7,8,9,10,"j","q","k","a"]  # used to generate output for user
 cardSuite = ["clubs", "diamonds", "hearts","spades"] #used to generate output for user
 userHand = [] # this is going to save the users hand
 dealerHand = [] # this is going to save the dealers hand
-userTotalValue = 0
-dealerTotalValue = 0
+userTotalCardValue = 0
+dealerTotalCardValue = 0
 
 #Users Hand Generation
 for x in range (0,2):
-	userValue = generateCardValue() #calls the function generateCardValue
-	userSuite = generateCardSuite() #generates card suit
+	userValue = random.choice(cardType) #Calls random to the cardType List
+	userSuite = random.choice(cardSuite) #Calls random to cardSuite
 	#based on values generated above we append the value into this new list
-	userHand.append ([cardType[userValue],cardSuite[userSuite]])
-	userRealValue = realValue(userValue) #gets realvalue from the card chosen
-	userTotalValue = totalValue(userTotalValue,userRealValue)
+	userHand.append ([userValue,userSuite])	
+	userCardValue = realValue(userValue)#gets the actual value from the card chosen
+	userTotalCardValue = totalValue(userTotalCardValue,userCardValue) #adds up total value of cards
 
-#Dealers Hand Generation
+
+#Dealers Hand Generation Functionality are the same as above
 for x in range (0,2):
-	dealerValue = generateCardValue()
-	dealerSuite = generateCardSuite()
-	dealerHand.append ([cardType[dealerValue],cardSuite[dealerSuite]])
-	dealerRealValue = realValue(dealerValue)
-	dealerTotalValue = totalValue(dealerTotalValue, dealerRealValue)
+	dealerValue = random.choice(cardType)
+	dealerSuite = random.choice(cardSuite)
+	dealerHand.append ([dealerValue,dealerSuite])
+	dealerCardValue = realValue(dealerValue)
+	dealerTotalCardValue = totalValue(dealerTotalCardValue, dealerCardValue)
 
-#check to see if user won with 21 after initial start of game
-autoWin(userTotalValue, dealerTotalValue)
 
-#typically you are only allowed to see one of the dealers card hence the out put
-print """Welcome to BlackJack..."""
-print ""
-print "Your Hand: ",userHand,"\n"
-print "Dealers Hand", dealerHand
+Greeting() #calls greeting
 
-"""use this for later
-#print "Dealers Hand: ",dealerHand[x], "[ XXXXXXXXXXX ]" 
-"""
 
-print userTotalValue, dealerTotalValue
+DisplayHand(userHand, dealerHand) #used to display current hand
 
-checkWin(userTotalValue,dealerTotalValue)
 
-play = True
+didUserWin = CheckWinner(userTotalCardValue) #checks to see if user won based off of first shuffle
 
-while play:
+if didUserWin == True:
+	winnersAnnouncement(userTotalCardValue, dealerTotalCardValue)
+
+userOption = " "
+iLost = False
+
+while userOption != 'stay' and didUserWin != True and iLost != True:
 	print "\nHit or Stay ?"
 	print "Enter hit for Hit and stay for Stay"
 	userOption = raw_input('> ')
 	if userOption == 'hit' :
-		userValue = generateCardValue()
-		userRealValue = realValue(userValue)
-		if userRealValue == 11:
-			userRealValue = checkAce(userRealValue, userTotalValue)
-		userSuite = generateCardSuite()
-		userHand.append ([cardType[userValue],cardSuite[userSuite]])
-		userTotalValue = totalValue(userTotalValue,userRealValue)
-		print "Your Hand: ",userHand,"\n"
-		print "Dealers Hand", dealerHand
-		print userTotalValue, dealerTotalValue
-		isOver(userTotalValue,dealerTotalValue)
-	else :
-		play = False
-		print "Your total is ",userTotalValue
+		userValue = random.choice(cardType) #calls the function generateCardValue
+		userSuite = random.choice(cardSuite) #generates card suit
+		userHand.append ([userValue,userSuite])	#adds to list
+		#if a is greater than 21 set it to 1
+		if userValue == 'a': 
+			userCardValue = checkAce(userCardValue, userTotalCardValue) #this function checks a's
+			userTotalCardValue = userTotalCardValue + userCardValue
+		else:
+			userCardValue = realValue(userValue)#gets the actual value from the card chosen
+			userTotalCardValue = totalValue(userTotalCardValue,userCardValue)
+		DisplayHand(userHand, dealerHand)
 
-whoWon(userTotalValue, dealerTotalValue)
+		"""
+		Ok here is what you need to work on next. Currently as it stands 
+		If you go over 21 when you hit, it is not stoping this code
+		Also take a look at the while loop do you really need userOption != 'stay'?
+		or is that redundant?
+		"""
+
+
+
+		didUserWin = isOver(userTotalCardValue, dealerTotalCardValue)
+		print userTotalCardValue, dealerTotalCardValue # i dont need this but good for testing
+	
+
+
+	
+iLost = isOver(userTotalCardValue,dealerTotalCardValue)
+whoWon(userTotalCardValue, dealerTotalCardValue)
+
+"""
+print userHand
+print dealerHand
+print userTotalCardValue
+print dealerTotalCardValue
+"""
+
 
